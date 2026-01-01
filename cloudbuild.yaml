@@ -22,7 +22,7 @@ steps:
   args:
     - -c
     - |
-      sed 's|\${SHORT_SHA}|'"$SHORT_SHA"'|g' deployment-dev.yaml | kubectl apply -f -
+      sed 's|\${SHORT_SHA}|'"$SHORT_SHA"'|g' deployment.yaml | kubectl apply -f -
   env:
     - CLOUDSDK_COMPUTE_ZONE=asia-south1-a
     - CLOUDSDK_CONTAINER_CLUSTER=dev-cluster
