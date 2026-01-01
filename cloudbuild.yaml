@@ -17,16 +17,14 @@ steps:
     - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
 
 # 3️⃣ Deploy to DEV cluster
-- name: 'gcr.io/cloud-builders/gcloud'
+- name: 'gcr.io/cloud-builders/kubectl'
   entrypoint: 'bash'
   args:
     - -c
     - |
-      # Authenticate kubectl with GKE
-      gcloud container clusters get-credentials dev-cluster --zone asia-south1-a --project $PROJECT_ID
-
-      # Apply deployment YAML with the built image
-      sed 's|\${SHORT_SHA}|'"$SHORT_SHA"'|g' deployment.yaml | kubectl apply -f -
+      sed "s|\${SHORT_SHA}|$SHORT_SHA|g" deployment-dev.yaml | kubectl apply -f -
   env:
-    - SHORT_SHA=$SHORT_SHA
+    - CLOUDSDK_COMPUTE_ZONE=asia-south1-a
+    - CLOUDSDK_CONTAINER_CLUSTER=dev-cluster
+
 

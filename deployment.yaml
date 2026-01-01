@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
         - name: webapp
-          # Placeholder tag to be replaced by Cloud Build
+          # Use the image with Cloud Build tag
           image: asia-south1-docker.pkg.dev/cicd-demo-483007/webapp-repo/my-app:${SHORT_SHA}
           ports:
             - containerPort: 80
+      # Optional: ensures GKE uses default service account for image pull
+      imagePullSecrets:
+        - name: gcp-artifact-registry
