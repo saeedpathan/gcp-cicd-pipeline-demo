@@ -16,14 +16,15 @@ steps:
     - push
     - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
 
-# 3️⃣ Deploy to DEV cluster
+# 3️⃣ Deploy to DEV cluster using sed
 - name: 'gcr.io/cloud-builders/kubectl'
   entrypoint: 'bash'
   args:
     - -c
     - |
-      # Substitute $SHORT_SHA in deployment YAML and apply
-      envsubst < deployment.yaml | kubectl apply -f -
+      # Replace placeholder ${SHORT_SHA} in deployment.yaml with actual SHA
+      sed "s|\${SHORT_SHA}|$SHORT_SHA|g" deployment-dev.yaml > deployment-dev-processed.yaml
+      kubectl apply -f deployment-dev-processed.yaml
   env:
     - CLOUDSDK_COMPUTE_ZONE=asia-south1-a
     - CLOUDSDK_CONTAINER_CLUSTER=dev-cluster
