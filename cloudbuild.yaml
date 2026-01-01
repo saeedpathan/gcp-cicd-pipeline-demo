@@ -24,7 +24,7 @@ steps:
     - -c
     - |
       # Substitute ${SHORT_SHA} in deployment YAML and apply to cluster
-      envsubst < deployment-dev.yaml | kubectl apply -f -
+      envsubst < deployment.yaml | kubectl apply -f -
   env:
     - CLOUDSDK_COMPUTE_ZONE=asia-south1-a
     - CLOUDSDK_CONTAINER_CLUSTER=dev-cluster
