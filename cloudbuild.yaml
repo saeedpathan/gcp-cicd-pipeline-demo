@@ -1,27 +1,26 @@
-options:
-  logging: CLOUD_LOGGING_ONLY
-
 steps:
-  # Build Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - build
-      - -t
-      - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
-      - .
+# 1️⃣ Build Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - build
+    - -t
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
+    - .
 
-  # Push Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - push
-      - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
+# 2️⃣ Push Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - push
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
 
-  # Deploy to DEV cluster
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - apply
-      - -f
-      - deployment.yaml
-    env:
-      - CLOUDSDK_COMPUTE_ZONE=asia-south1-a
-      - CLOUDSDK_CONTAINER_CLUSTER=dev-cluster
+# 3️⃣ Deploy to DEV cluster
+- name: 'gcr.io/cloud-builders/kubectl'
+  entrypoint: 'bash'
+  args:
+    - -c
+    - |
+      # Substitute $SHORT_SHA in deployment YAML and apply
+      envsubst < deployment.yaml | kubectl apply -f -
+  env:
+    - CLOUDSDK_COMPUTE_ZONE=asia-south1-a
+    - CLOUDSDK_CONTAINER_CLUSTER=dev-cluster

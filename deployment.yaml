@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: asia-south1-docker.pkg.dev/cicd-demo-483007/webapp-repo/my-app:$SHORT_SHA
+          # Placeholder tag to be replaced by Cloud Build
+          image: asia-south1-docker.pkg.dev/cicd-demo-483007/webapp-repo/my-app:${SHORT_SHA}
           ports:
             - containerPort: 80
