@@ -3,31 +3,35 @@ options:
 
 steps:
 # 1️⃣ Build Docker image
-- name: 'gcr.io/cloud-builders/docker'
+- name: gcr.io/cloud-builders/docker
   args:
     - build
     - -t
-    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:latest
-    #$SHORT_SHA
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
     - .
 
 # 2️⃣ Push Docker image
-- name: 'gcr.io/cloud-builders/docker'
+- name: gcr.io/cloud-builders/docker
   args:
     - push
-    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:latest
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
 
-# 3️⃣ Deploy to DEV cluster
-- name: 'gcr.io/cloud-builders/kubectl'
-  entrypoint: 'bash'
+# 3️⃣ Get GKE credentials (THIS WAS MISSING)
+- name: gcr.io/cloud-builders/gcloud
+  args:
+    - container
+    - clusters
+    - get-credentials
+    - dev-cluster
+    - --zone
+    - asia-south1-a
+    - --project
+    - $PROJECT_ID
+
+# 4️⃣ Deploy to DEV cluster
+- name: gcr.io/cloud-builders/kubectl
+  entrypoint: bash
   args:
     - -c
     - |
-      # Use | as delimiter to avoid conflicts
-      sed "s|${SHORT_SHA}|$SHORT_SHA|g" deployment.yaml | kubectl apply -f -
-  env:
-    - CLOUDSDK_COMPUTE_ZONE=asia-south1-a
-    - CLOUDSDK_CONTAINER_CLUSTER=dev-cluster
-
-
-
+      sed "s|IMAGE_TAG|$SHORT_SHA|g" deployment.yaml | kubectl apply -f -
