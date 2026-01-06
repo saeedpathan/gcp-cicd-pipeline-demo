@@ -21,4 +21,4 @@ steps:
     - release-$SHORT_SHA
     - --delivery-pipeline=webapp-pipeline
     - --region=asia-south1
-    - --images=my-app=asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:${SHORT_SHA:-latest}
+    - --images=my-app=asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:${SHORT_SHA:-latest}
