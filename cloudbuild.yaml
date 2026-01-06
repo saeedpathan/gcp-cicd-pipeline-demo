@@ -1,8 +1,4 @@
-options:
-  logging: CLOUD_LOGGING_ONLY
-
 steps:
-# 1️⃣ Build Docker image
 - name: gcr.io/cloud-builders/docker
   args:
     - build
@@ -10,28 +6,17 @@ steps:
     - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
     - .
 
-# 2️⃣ Push Docker image
 - name: gcr.io/cloud-builders/docker
   args:
     - push
     - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
 
-# 3️⃣ Get GKE credentials (THIS WAS MISSING)
 - name: gcr.io/cloud-builders/gcloud
   args:
-    - container
-    - clusters
-    - get-credentials
-    - dev-cluster
-    - --zone
-    - asia-south1-a
-    - --project
-    - $PROJECT_ID
-
-# 4️⃣ Deploy to DEV cluster
-- name: gcr.io/cloud-builders/kubectl
-  entrypoint: bash
-  args:
-    - -c
-    - |
-      sed "s|IMAGE_TAG|$SHORT_SHA|g" deployment.yaml | kubectl apply -f -
+    - deploy
+    - releases
+    - create
+    - release-$SHORT_SHA
+    - --delivery-pipeline=webapp-pipeline
+    - --region=asia-south1
+    - --images=my-app=asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
