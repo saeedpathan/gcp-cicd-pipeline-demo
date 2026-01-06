@@ -15,7 +15,7 @@ spec:
       containers:
         - name: webapp
           # Use the image with Cloud Build tag
-          image: asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo/webapp-repo/my-app:TAG
+          image: asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:TAG
           ports:
             - containerPort: 80
       # Optional: ensures GKE uses default service account for image pull
