@@ -7,14 +7,15 @@ steps:
   args:
     - build
     - -t
-    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:latest
+    #$SHORT_SHA
     - .
 
 # 2️⃣ Push Docker image
 - name: 'gcr.io/cloud-builders/docker'
   args:
     - push
-    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
+    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:latest
 
 # 3️⃣ Deploy to DEV cluster
 - name: 'gcr.io/cloud-builders/kubectl'
