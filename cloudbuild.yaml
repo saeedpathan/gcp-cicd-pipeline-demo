@@ -5,13 +5,13 @@ steps:
   args:
     - build
     - -t
-    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
+    - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
     - .
 
 - name: gcr.io/cloud-builders/docker
   args:
     - push
-    - asia-south1-docker.pkg.dev/$PROJECT_ID/webapp-repo/my-app:$SHORT_SHA
+    - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
 
 - name: gcr.io/cloud-builders/gcloud
   args:
