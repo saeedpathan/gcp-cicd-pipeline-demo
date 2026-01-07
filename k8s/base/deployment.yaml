@@ -13,6 +13,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: my-app
+        image: asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app
         ports:
         - containerPort: 80
+
