@@ -4,7 +4,7 @@ metadata:
   name: webapp
 build:
   artifacts:
-    - image: asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app
+    - image: asia-south1-docker.pkg.dev/${_PROJECT_ID}/webapp-repo/my-app
 deploy:
   kubectl:
     manifests:

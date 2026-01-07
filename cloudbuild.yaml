@@ -1,22 +1,22 @@
 options:
   logging: CLOUD_LOGGING_ONLY
 
+substitutions:
+  _PROJECT_ID: gcp-cicd-pipeline-demo-project
+
 steps:
-# Step 1: Build Docker image
 - name: gcr.io/cloud-builders/docker
   args:
     - build
     - -t
-    - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
+    - asia-south1-docker.pkg.dev/${_PROJECT_ID}/webapp-repo/my-app:$SHORT_SHA
     - .
 
-# Step 2: Push Docker image
 - name: gcr.io/cloud-builders/docker
   args:
     - push
-    - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
+    - asia-south1-docker.pkg.dev/${_PROJECT_ID}/webapp-repo/my-app:$SHORT_SHA
 
-# Step 3: Deploy using Cloud Deploy
 - name: gcr.io/cloud-builders/gcloud
   args:
     - deploy
@@ -25,5 +25,6 @@ steps:
     - release-$SHORT_SHA
     - --delivery-pipeline=webapp-pipeline
     - --region=asia-south1
-    - --project=gcp-cicd-pipeline-demo-project
-    - --images=asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app=asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
+    - --skaffold-file=skaffold.yaml
+    - --images=asia-south1-docker.pkg.dev/${_PROJECT_ID}/webapp-repo/my-app:$SHORT_SHA
+    - --project=${_PROJECT_ID}
