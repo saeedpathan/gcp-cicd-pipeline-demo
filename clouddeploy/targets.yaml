@@ -3,7 +3,7 @@ kind: Target
 metadata:
   name: dev
 gke:
-  cluster: projects/PROJECT_ID/locations/asia-south1-a/clusters/dev-cluster
+  cluster: projects/gcp-cicd-pipeline-demo-project/locations/asia-south1-a/clusters/dev-cluster
 ---
 apiVersion: deploy.cloud.google.com/v1
 kind: Target
@@ -11,4 +11,4 @@ metadata:
   name: prod
 requireApproval: true
 gke:
-  cluster: projects/PROJECT_ID/locations/asia-south1-a/clusters/prod-cluster
+  cluster: projects/gcp-cicd-pipeline-demo-project/locations/asia-south1-a/clusters/prod-cluster
