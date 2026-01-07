@@ -2,7 +2,7 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:
-# Build Docker image
+# Step 1: Build Docker image
 - name: gcr.io/cloud-builders/docker
   args:
     - build
@@ -10,13 +10,13 @@ steps:
     - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
     - .
 
-# Push Docker image
+# Step 2: Push Docker image
 - name: gcr.io/cloud-builders/docker
   args:
     - push
     - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
 
-# Deploy with Cloud Deploy
+# Step 3: Deploy using Cloud Deploy
 - name: gcr.io/cloud-builders/gcloud
   args:
     - deploy
