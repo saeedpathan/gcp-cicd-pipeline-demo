@@ -1,8 +1,0 @@
-resources:
-- ../base
-
-namespace: dev
-
-replicas:
-- name: webapp
-  count: 1
