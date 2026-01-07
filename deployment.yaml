@@ -15,7 +15,7 @@ spec:
       containers:
         - name: webapp
           # Use the image with Cloud Build tag
-          image: asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:IMAGE_TAG
+          image: asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app
           imagePullPolicy: Always
           #TAG
           ports:
