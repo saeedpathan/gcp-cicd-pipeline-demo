@@ -1,6 +1,8 @@
 options:
   logging: CLOUD_LOGGING_ONLY
+
 steps:
+# Step 1: Build Docker image
 - name: gcr.io/cloud-builders/docker
   args:
     - build
@@ -8,11 +10,13 @@ steps:
     - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
     - .
 
+# Step 2: Push Docker image to Artifact Registry
 - name: gcr.io/cloud-builders/docker
   args:
     - push
     - asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
 
+# Step 3: Create a Cloud Deploy release
 - name: gcr.io/cloud-builders/gcloud
   args:
     - deploy
@@ -21,5 +25,5 @@ steps:
     - release-$SHORT_SHA
     - --delivery-pipeline=webapp-pipeline
     - --region=asia-south1
-    - --skaffold-file=skaffold.yaml
+    - --project=gcp-cicd-pipeline-demo-project
     - --images=asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app=asia-south1-docker.pkg.dev/gcp-cicd-pipeline-demo-project/webapp-repo/my-app:$SHORT_SHA
